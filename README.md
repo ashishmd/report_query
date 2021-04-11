@@ -1,8 +1,6 @@
-# ReportQuery
+# ReportQuery [WIP]
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/report_query`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+The idea of this gem is to generate the most optimal queries for report. Currently when table count increases in a project, it is really hard to remember the indexed columns, its order and many factors that affect the performance. This tool will generate the most optimal queries for all needs.  
 
 ## Installation
 
@@ -22,7 +20,29 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+This is just an idea till now but this is what I am expecting to do. Lets say we have tables as Account `has_many` Users `has_many` Emails `has_many` EmailConversations `has_many` EmailConversationRecipients. Now task is to find the email conversation of a user where a recipient is `abc@yopmail.com`. 
+```ruby
+account_id = 123
+select_columns = %w[EmailConversations.*]
+
+where_conditions = [{
+    'Users.id' => 1,
+    'condition_type' => 'column_to_fixnum'
+}, {
+    'EmailConversationRecipients.email_address' => 'abc@yopmail.com',
+    'condition_type' => 'column_to_string'
+}, {
+    'EmailConversationRecipients.email_address' => 'Users.email_address'
+    'condition_type' => 'column_to_column'
+}]
+
+page = 1
+per_page = 20
+
+ReportQuery.select(select_columns).for_account(account_id).where(where_conditions).page(page).per_page(per_page).generate_query
+
+```
+Reading the inputs of select_columns, where_conditions etc, the gem should intelligently understand what tables to use, what joins to use etc. The gem should work the same way as we think.
 
 ## Development
 
