@@ -27,13 +27,13 @@ select_columns = %w[EmailConversations.*]
 
 where_conditions = [{
     'Users.id' => 1,
-    'condition_type' => 'column_to_fixnum'
+    'condition_type' => 'column_eq_fixnum'
 }, {
     'EmailConversationRecipients.email_address' => 'abc@yopmail.com',
-    'condition_type' => 'column_to_string'
+    'condition_type' => 'column_eq_string'
 }, {
     'EmailConversationRecipients.email_address' => 'Users.email_address'
-    'condition_type' => 'column_to_column'
+    'condition_type' => 'column_eq_column'
 }]
 
 page = 1
